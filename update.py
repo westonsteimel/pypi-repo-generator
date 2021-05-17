@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup, Comment
 packages = {
     'awscli',
     'awslambdaric',
+    'aws-xray-sdk',
     'backcall',
     'boto3',
     'botocore',
@@ -21,6 +22,7 @@ packages = {
     'docutils',
     'dparse',
     'fastapi',
+    'future',
     'greenlet',
     'gunicorn',
     'h11',
@@ -79,6 +81,7 @@ packages = {
     'urllib3',
     'uvicorn',
     'wcwidth',
+    'wrapt',
 }
 
 custom_packages = set(os.listdir('packages'))
