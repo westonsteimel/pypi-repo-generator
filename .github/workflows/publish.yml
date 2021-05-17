@@ -1,0 +1,31 @@
+on: 
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 1 * * *'
+name: Generate and publish website
+env: 
+  PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+jobs:
+  publish:
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@main
+      - 
+        name: Generate and publish
+        run: |
+            rm -rf .publish
+            git clone https://github.com/westonsteimel/pypi-repo.git .publish
+            pip install -r requirements.txt
+            python update.py
+            cd .publish
+            export DATE="`date --utc --rfc-3339=seconds`"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git config user.name "github-actions[bot]"
+            git add .
+            git diff-index --quiet HEAD || git commit --message "regenerated at ${DATE}."
+            git push "https://westonsteimel:${PUBLISH_TOKEN}@github.com/westonsteimel/pypi-repo.git"
