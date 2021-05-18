@@ -63,6 +63,7 @@ packages = {
     'pyparsing',
     'pysocks',
     'pytest',
+    'pytest-datadir',
     'python-dateutil',
     'pytz',
     'pyyaml',
