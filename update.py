@@ -79,6 +79,7 @@ packages = {
     'pytest',
     'pytest-datadir',
     'python-dateutil',
+    'python-jose',
     'pytz',
     'pyyaml',
     'pyzmq',
