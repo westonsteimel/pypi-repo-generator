@@ -54,6 +54,7 @@ packages = {
     'jmespath',
     'jsondiff',
     'jsonpatch',
+    'jsonpointer',
     'jsonschema',
     'junit-xml',
     'jupyter-client',
