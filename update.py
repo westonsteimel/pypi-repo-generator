@@ -89,6 +89,7 @@ packages = {
     'pymssql',
     'pyopenssl',
     'pyparsing',
+    'pyrsistent',
     'pysocks',
     'pytest',
     'pytest-datadir',
