@@ -4,6 +4,7 @@ import shutil
 from bs4 import BeautifulSoup, Comment
 
 packages = {
+    'argparse',
     'atomicwrites',
     'attrs',
     'awscli',
@@ -20,6 +21,7 @@ packages = {
     'chardet',
     'click',
     'colorama',
+    'coverage',
     'cryptography',
     'cycler',
     'decorator',
@@ -34,6 +36,7 @@ packages = {
     'gunicorn',
     'h11',
     'httpie',
+    'httpretty',
     'idna',
     'inflect',
     'iniconfig',
@@ -59,6 +62,7 @@ packages = {
     'more-itertools',
     'moto',
     'networkx',
+    'nose',
     'orjson',
     'packaging',
     'parso',
