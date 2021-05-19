@@ -28,6 +28,7 @@ packages = {
     'h11',
     'httpie',
     'idna',
+    'inflect',
     'ipykernel',
     'ipython',
     'ipython-genutils',
