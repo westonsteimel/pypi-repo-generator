@@ -15,7 +15,6 @@ packages = {
     'botocore',
     'certifi',
     'cffi',
-    'cfn-list',
     'chardet',
     'click',
     'colorama',
@@ -122,13 +121,19 @@ for package in sorted(packages):
     if not index_entry:
         if package not in custom_packages:
             pypi_url = f'https://pypi.org/simple/{package}/'
-            pypi_html = requests.get(pypi_url).content
-            soup = BeautifulSoup(pypi_html, features='html.parser')
-            soup.insert(1, Comment(\
-                f'This file is replicated from {pypi_url}. Do not update directly as updates will be overwritten when the page is updated on PyPi.'))
+            response = requests.get(pypi_url)
 
-            with open(f'{outdir}/{package}/index.html', 'w+') as package_index:
-                package_index.write(str(soup))
+            if response.ok:
+                pypi_html = requests.get(pypi_url).content
+                soup = BeautifulSoup(pypi_html, features='html.parser')
+                soup.insert(1, Comment(\
+                    f'This file is replicated from {pypi_url}. Do not update directly as updates will be overwritten when the page is updated on PyPi.'))
+
+                with open(f'{outdir}/{package}/index.html', 'w+') as package_index:
+                    package_index.write(str(soup))
+            else:
+                print(f'package {package} could not be found on pypi.org')
+                continue
         else:
             shutil.copytree(f'packages/{package}/', f'{outdir}/{package}/', dirs_exist_ok=True)
 
