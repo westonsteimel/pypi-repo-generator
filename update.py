@@ -90,6 +90,7 @@ packages = {
     's3fs',
     's3transfer',
     'safety',
+    'scipy',
     'setuptools',
     'shellingham',
     'simplejson',
