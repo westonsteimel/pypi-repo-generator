@@ -4,6 +4,8 @@ import shutil
 from bs4 import BeautifulSoup, Comment
 
 packages = {
+    'atomicwrites',
+    'attrs',
     'awscli',
     'awslambdaric',
     'aws-xray-sdk',
@@ -29,6 +31,8 @@ packages = {
     'httpie',
     'idna',
     'inflect',
+    'iniconfig',
+    'importlib-metadata',
     'ipykernel',
     'ipython',
     'ipython-genutils',
