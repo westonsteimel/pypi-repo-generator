@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup, Comment
 
 packages = {
     'argparse',
+    'anyio',
     'appdirs',
     'atomicwrites',
     'attrs',
