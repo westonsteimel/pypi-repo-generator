@@ -112,6 +112,7 @@ packages = {
     'shellingham',
     'simplejson',
     'six',
+    'sniffio',
     'sqlalchemy',
     'sshpubkeys',
     'starlette',
