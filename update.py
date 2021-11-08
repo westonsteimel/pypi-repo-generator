@@ -1,7 +1,12 @@
+import json
 import os
 import requests
 import shutil
 from bs4 import BeautifulSoup, Comment
+from glob import glob
+from io import BytesIO
+from packaging.utils import parse_wheel_filename, parse_sdist_filename
+from zipfile import ZipFile
 
 packages = {
     'argparse',
@@ -17,6 +22,7 @@ packages = {
     'boto',
     'boto3',
     'botocore',
+    'cachecontrol',
     'certifi',
     'cffi',
     'cfn-lint',
@@ -64,6 +70,7 @@ packages = {
     'jupyter-console',
     'jupyter-core',
     'kiwisolver',
+    'lockfile',
     'mangum',
     'markupsafe',
     'matplotlib',
@@ -71,6 +78,7 @@ packages = {
     'mock',
     'more-itertools',
     'moto',
+    'msgpack',
     'networkx',
     'nose',
     'orjson',
@@ -150,6 +158,23 @@ with open('index.html.template', 'r') as index:
 
 outdir = './.publish'
 os.makedirs(outdir, exist_ok=True)
+os.makedirs('./.vulns', exist_ok=True)
+
+ZipFile(BytesIO(requests.get('https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip').content)).extractall('./.vulns/')
+vulns = {}
+
+for advisory_file in glob(f'./.vulns/*.json', recursive=True):
+    with open(advisory_file, 'r+') as f:
+        advisory = json.load(f)
+        
+        for package in advisory.get('affected', []):
+            name = package['package']['name']
+            
+            if 'versions' in package:
+                if name not in vulns:
+                    vulns[name] = set(package['versions'])
+                else:
+                    vulns[name] = vulns[name].union(set(package['versions']))
 
 for package in sorted(packages):
     os.makedirs(f'{outdir}/{package}', exist_ok=True)
@@ -173,6 +198,38 @@ for package in sorted(packages):
                 continue
         else:
             shutil.copytree(f'packages/{package}/', f'{outdir}/{package}/', dirs_exist_ok=True)
+
+        if package in vulns:
+            with open(f'{outdir}/{package}/index.html', 'r') as f:
+                soup = BeautifulSoup(f.read(), features='html.parser')
+
+            for link in soup.find_all('a'):
+                name = link.string
+                version = None
+
+                if name.endswith('.tar.gz') or name.endswith('.zip'):
+                    try:
+                        package_name, version = parse_sdist_filename(name)
+                    except:
+                        #print(f'removing: {link}')
+                        link.extract()
+                elif name.endswith('.whl'):
+                    try:
+                        package_name, version, _, _ = parse_wheel_filename(name)
+                    except:
+                        #print(f'removing: {link}')
+                        link.extract()
+                else:
+                    #print(f'removing: {link}')
+                    link.extract()
+
+                if version and version.public in vulns[package]:
+                    if package == 'pyyaml':
+                        print(f'removing vulnerable version: {link}')
+                    link.extract()
+
+            with open(f'{outdir}/{package}/index.html', 'w+') as package_index:
+                package_index.write(str(soup))
 
     index_entry = index_soup.new_tag('a', href=f'/pypi-repo/{package}/')
     index_entry.string = package
