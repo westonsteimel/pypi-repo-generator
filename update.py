@@ -12,6 +12,7 @@ packages = {
     'argparse',
     'anyio',
     'appdirs',
+    'atheris',
     'atomicwrites',
     'attrs',
     'awscli',
