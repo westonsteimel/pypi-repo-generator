@@ -33,6 +33,7 @@ packages = {
     'coverage',
     'cryptography',
     'cycler',
+    'cyclonedx-python-lib',
     'dataclasses',
     'decorator',
     'distlib',
