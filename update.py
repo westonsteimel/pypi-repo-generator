@@ -122,6 +122,8 @@ packages = {
     'requirements-parser',
     'resolvelib',
     'responses',
+    'ruamel.yaml',
+    'ruamel.yaml.clib',
     'rsa',
     's3fs',
     's3transfer',
