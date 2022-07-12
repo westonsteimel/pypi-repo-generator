@@ -157,7 +157,8 @@ packages = {
     'zipp',
 }
 
-custom_packages = set(os.listdir('packages'))
+# custom_packages = set(os.listdir('packages'))
+custom_packages = set()
 
 for custom_package in custom_packages:
     packages.add(custom_package)
